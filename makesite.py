@@ -37,6 +37,7 @@ import datetime
 
 from jinja2 import Template, Environment, FileSystemLoader
 from bs4 import BeautifulSoup
+import CommonMark
 
 from vars import *
 
@@ -113,16 +114,11 @@ def read_content(filename):
 
     # Convert Markdown content to HTML.
     if filename.endswith(('.md', '.mkd', '.mkdn', '.mdown', '.markdown')):
-        try:
-            import CommonMark
+        # Separate text and template variables
+        variables, text = separate_content_and_variables(text)
 
-            # Separate text and template variables
-            variables, text = separate_content_and_variables(text)
-
-            text = variables + "{% include 'md_header.html' %}" + \
-                CommonMark.commonmark(text) + "{% include 'md_footer.html' %}"
-        except ImportError as e:
-            log('WARNING: Cannot render Markdown in {}: {}', filename, str(e))
+        text = variables + "{% include 'md_header.html' %}" + \
+            CommonMark.commonmark(text) + "{% include 'md_footer.html' %}"
 
     # Optional additional parsing
     if 'add_parser' in sys.modules:
