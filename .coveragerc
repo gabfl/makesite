@@ -3,9 +3,7 @@ source=makesite
 
 [report]
 omit =
-  setup.py
-  src/__main__.py
-  src/test/*
+  test/*
   venv/*
 exclude_lines =
   if __name__ == "__main__":
