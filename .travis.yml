@@ -6,7 +6,7 @@ before_install:
   - pip install -r requirements.txt
 script:
   - pycodestyle --exclude=venv --ignore=E501 .
-  - pytest
+  - python3 -m unittest
   - coverage run --parallel-mode --branch --source=. -m unittest discover -bv
   - cp add_parser.py.sample add_parser.py
   - coverage run --parallel-mode --branch --source=. -m unittest discover -bv

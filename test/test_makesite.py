@@ -2,7 +2,7 @@
 import unittest
 import tempfile
 
-from .. import makesite
+import makesite
 
 
 class Test(unittest.TestCase):
