@@ -12,6 +12,8 @@ script:
   - coverage run --parallel-mode --branch --source=. -m unittest discover -bv
   - cp add_parser.py.sample add_parser.py
   - coverage run --parallel-mode --branch --source=. -m unittest discover -bv
+  - pip uninstall --yes commonmark
+  - coverage run --parallel-mode --branch --source=. -m unittest discover -bv
   - coverage combine
   - coverage report -m
 after_success:
