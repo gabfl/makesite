@@ -114,8 +114,6 @@ def read_content(filename):
     # Convert Markdown content to HTML.
     if filename.endswith(('.md', '.mkd', '.mkdn', '.mdown', '.markdown')):
         try:
-            if _test == 'ImportError':
-                raise ImportError('Error forced by test')
             import CommonMark
 
             # Separate text and template variables
@@ -339,10 +337,6 @@ def main():
                None, **params)
     make_pages('content/[!_]*.html', documentroot + '/{{ slug }}/index.html',
                None, **params)
-
-
-# Test parameter to be set temporarily by unit tests.
-_test = None
 
 
 if __name__ == '__main__':

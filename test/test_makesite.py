@@ -66,8 +66,11 @@ class Test(unittest.TestCase):
             'content/blog/*.md', '_site/blog/{{ slug }}/index.html', None, blog='blog')
 
         a = makesite.make_list(section_pages, '_site/blog/index.html',
-                               makesite.fread('layout/list.html'), makesite.fread('layout/item.html'), None, blog='blog', title='blog')
+                               makesite.fread('layout/list.html'), makesite.fread('layout/item.html'), limit=None, blog='blog', title='blog')
+        self.assertIsNone(a)
 
+        a = makesite.make_list(section_pages, '_site/blog/index.html',
+                               makesite.fread('layout/list.html'), makesite.fread('layout/item.html'), limit=1, blog='blog', title='blog')
         self.assertIsNone(a)
 
     def test_get_title_and_summary(self):
@@ -82,6 +85,6 @@ class Test(unittest.TestCase):
         self.assertEqual(makesite.get_content_path(
             'blog'), 'content/blog')
         self.assertEqual(makesite.get_content_path(
-            'news'), 'content/news')
+            'content', 'content'), 'content/content')
         self.assertEqual(makesite.get_content_path(
             'name', 'some/other/path'), 'content/some/other/path')
