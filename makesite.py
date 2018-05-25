@@ -38,7 +38,10 @@ import datetime
 from jinja2 import Template, Environment, FileSystemLoader
 from bs4 import BeautifulSoup
 
-from vars import *
+try:
+    from .vars import *
+except ModuleNotFoundError:
+    from vars import *
 
 
 def get_environment_name():
