@@ -10,6 +10,7 @@ venv/
 
 # Codecov
 .coverage
+.coverage.*
 coverage.xml
 
 # Mac
