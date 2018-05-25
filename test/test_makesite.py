@@ -23,6 +23,11 @@ class Test(unittest.TestCase):
         file_ = tempfile.NamedTemporaryFile()
         self.assertIsNone(makesite.fwrite(file_.name, 'some content'))
 
+    def test_fwrite_2(self):
+        dir_ = tempfile.TemporaryDirectory()
+        self.assertIsNone(makesite.fwrite(
+            dir_.name + '/some/subdir/new.txt', 'some content'))
+
     def test_log(self):
         self.assertIsNone(makesite.log('some log'))
 
@@ -85,6 +90,11 @@ class Test(unittest.TestCase):
         self.assertEqual(makesite.get_content_path(
             'blog'), 'content/blog')
         self.assertEqual(makesite.get_content_path(
+            'news'), 'content/news')
+        self.assertEqual(makesite.get_content_path(
             'content', 'content'), 'content/content')
         self.assertEqual(makesite.get_content_path(
             'name', 'some/other/path'), 'content/some/other/path')
+
+    def test_main(self):
+        self.assertIsNone(makesite.main())
