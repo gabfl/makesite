@@ -287,10 +287,6 @@ def main():
         'about_name': site_vars['about']['name'],
     }
 
-    # If params.json exists, load it.
-    if os.path.isfile('params.json'):
-        params.update(json.loads(fread('params.json')))
-
     # Load layouts.
     list_layout = fread('layout/list.html')
     list_layout_recent = fread('layout/list_recent.html')
