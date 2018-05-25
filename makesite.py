@@ -37,6 +37,7 @@ import datetime
 
 from jinja2 import Template, Environment, FileSystemLoader
 from bs4 import BeautifulSoup
+import CommonMark
 
 from vars import *
 
@@ -106,25 +107,18 @@ def read_content(filename):
     date_slug = os.path.basename(filename).split('.')[0]
     match = re.search('^(?:(\\d\\d\\d\\d-\\d\\d-\\d\\d)-)?(.+)$', date_slug)
     content = {
-        'date': dateFormat(match.group(1) or '1970-01-01'),
+        'date': format_date(match.group(1) or '1970-01-01'),
         'date_ymd': match.group(1) or '1970-01-01',
         'slug': match.group(2),
     }
 
     # Convert Markdown content to HTML.
     if filename.endswith(('.md', '.mkd', '.mkdn', '.mdown', '.markdown')):
-        try:
-            if _test == 'ImportError':
-                raise ImportError('Error forced by test')
-            import CommonMark
+        # Separate text and template variables
+        variables, text = separate_content_and_variables(text)
 
-            # Separate text and template variables
-            variables, text = separate_content_and_variables(text)
-
-            text = variables + "{% include 'md_header.html' %}" + \
-                CommonMark.commonmark(text) + "{% include 'md_footer.html' %}"
-        except ImportError as e:
-            log('WARNING: Cannot render Markdown in {}: {}', filename, str(e))
+        text = variables + "{% include 'md_header.html' %}" + \
+            CommonMark.commonmark(text) + "{% include 'md_footer.html' %}"
 
     # Optional additional parsing
     if 'add_parser' in sys.modules:
@@ -152,7 +146,7 @@ def separate_content_and_variables(text, boundary='{# /variables #}'):
     return ('', text)
 
 
-def dateFormat(date):
+def format_date(date):
     """
         Change the date format
     """
@@ -230,14 +224,14 @@ def get_title_and_summary(path):
     return (soup.find(id="title").text, truncate(soup.find(id="post").text))
 
 
-def get_content_path(section, path):
+def get_content_path(section, path=None):
     """
         Returns the directory used to store a section sources
         Used to prevent the case where somebody would rename the path for the
         blog section for not rename the `blog` directory in `content/`
     """
 
-    if os.path.isdir(path):
+    if path and os.path.isdir(path):
         return 'content/' + path
     elif section == 'blog' and os.path.isdir('content/blog'):
         return 'content/blog'
@@ -289,10 +283,6 @@ def main():
         'about_name': site_vars['about']['name'],
     }
 
-    # If params.json exists, load it.
-    if os.path.isfile('params.json'):
-        params.update(json.loads(fread('params.json')))
-
     # Load layouts.
     list_layout = fread('layout/list.html')
     list_layout_recent = fread('layout/list_recent.html')
@@ -339,10 +329,6 @@ def main():
                None, **params)
     make_pages('content/[!_]*.html', documentroot + '/{{ slug }}/index.html',
                None, **params)
-
-
-# Test parameter to be set temporarily by unit tests.
-_test = None
 
 
 if __name__ == '__main__':

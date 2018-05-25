@@ -1,3 +1,9 @@
+[run]
+source=makesite
+
 [report]
+omit =
+  test/*
+  venv/*
 exclude_lines =
-    if __name__ == '__main__':
+  if __name__ == '__main__':
