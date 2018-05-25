@@ -19,7 +19,7 @@ def main():
                         help="Sitemap destination file", required=True)
     args = parser.parse_args()
 
-    global baseUrl, l, validHeaders, smHeader, smFooter, smItem
+    global baseUrl, listUrls, validHeaders, smHeader, smFooter, smItem
 
     baseUrl = args.url
     validHeaders = ['text/html']
@@ -34,7 +34,7 @@ def main():
     </url>"""
 
     # List of all URLs
-    l = {}
+    listUrls = {}
 
     # Initiate scanning
     scanUrl(baseUrl)
@@ -48,7 +48,7 @@ def main():
 
 def scanUrl(url):
 
-    global baseUrl, l
+    global baseUrl, listUrls
 
     print(" * Scanning %s" % url)
 
@@ -187,7 +187,7 @@ def createSitemap():
         Returns the sitemap
     """
 
-    global l, smHeader, smFooter, smItem
+    global listUrls, smHeader, smFooter, smItem
 
     print(' * Creating sitemap with %d URLs' % (len(l)))
 
@@ -195,7 +195,7 @@ def createSitemap():
     sitemap = smHeader + '\n'
 
     # Loop thru URLs and populate sitemap
-    for url in l:
+    for url in listUrls:
         # Get date
         date = l[url]
 
