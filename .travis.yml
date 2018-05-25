@@ -8,8 +8,6 @@ script:
   - pycodestyle --exclude=venv --ignore=E501 .
   - python3 -m unittest
   - coverage run --parallel-mode --branch --source=. -m unittest discover -bv
-  - mkdir _site
-  - coverage run --parallel-mode --branch --source=. -m unittest discover -bv
   - cp add_parser.py.sample add_parser.py
   - coverage run --parallel-mode --branch --source=. -m unittest discover -bv
   - pip uninstall --yes commonmark
