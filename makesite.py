@@ -109,6 +109,7 @@ def read_content(filename):
     content = {
         'date': format_date(match.group(1) or '1970-01-01'),
         'date_ymd': match.group(1) or '1970-01-01',
+        'date_rfc_2822': format_date(match.group(1) or '1970-01-01', date_format_override='%a, %d %b %Y %H:%M:%S +0000'),
         'slug': match.group(2),
     }
 
@@ -146,14 +147,14 @@ def separate_content_and_variables(text, boundary='{# /variables #}'):
     return ('', text)
 
 
-def format_date(date):
+def format_date(date, date_format_override=None):
     """
         Change the date format
     """
 
     global date_format
 
-    return datetime.datetime.strptime(date, '%Y-%m-%d').strftime(date_format)
+    return datetime.datetime.strptime(date, '%Y-%m-%d').strftime(date_format_override or date_format)
 
 
 def render(html, **params):
