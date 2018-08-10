@@ -86,9 +86,9 @@ def scanUrl(url):
         if not isSameWebsite(url):
             continue
 
-        if url and url.strip('./') not in l.keys():
+        if url and url.strip('./') not in listUrls.keys():
             # print(url)
-            l[url.strip('./')] = getDateLastModified(r)
+            listUrls[url.strip('./')] = getDateLastModified(r)
 
             scanUrl(url)
 
@@ -189,7 +189,7 @@ def createSitemap():
 
     global listUrls, smHeader, smFooter, smItem
 
-    print(' * Creating sitemap with %d URLs' % (len(l)))
+    print(' * Creating sitemap with %d URLs' % (len(listUrls)))
 
     # Set header
     sitemap = smHeader + '\n'
@@ -197,7 +197,7 @@ def createSitemap():
     # Loop thru URLs and populate sitemap
     for url in listUrls:
         # Get date
-        date = l[url]
+        date = listUrls[url]
 
         # Create sitemap section
         item = smItem
