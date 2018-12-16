@@ -37,7 +37,7 @@ import datetime
 
 from jinja2 import Template, Environment, FileSystemLoader
 from bs4 import BeautifulSoup
-import CommonMark
+import commonmark
 
 from vars import *
 
@@ -119,7 +119,7 @@ def read_content(filename):
         variables, text = separate_content_and_variables(text)
 
         text = variables + "{% include 'md_header.html' %}" + \
-            CommonMark.commonmark(text) + "{% include 'md_footer.html' %}"
+            commonmark.commonmark(text) + "{% include 'md_footer.html' %}"
 
     # Optional additional parsing
     if 'add_parser' in sys.modules:
